@@ -1,0 +1,15 @@
+# Install with: crontab -e   (times are the server's timezone; set CRON_TZ if needed)
+# Replace /opt/aws-cost-cleanup with the path where you cloned the repo.
+CRON_TZ=Asia/Kolkata
+AWS_PROFILE=cost-cleanup
+AWS_REGION=ap-south-1
+
+# Start dev instances at 08:30 Mon-Fri
+30 8 * * 1-5  /opt/aws-cost-cleanup/scripts/start_dev.sh
+
+# Stop dev instances at 20:00 Mon-Fri
+0 20 * * 1-5  /opt/aws-cost-cleanup/scripts/stop_dev.sh
+
+# Weekly cleanup report + snapshot pruning, Sunday 02:00
+# (remove EXECUTE=1 for report-only while you validate)
+0 2 * * 0     EXECUTE=1 /opt/aws-cost-cleanup/scripts/weekly_cleanup.sh
